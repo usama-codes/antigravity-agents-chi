@@ -1,0 +1,36 @@
+{
+  "name": "ble-mac-scanner",
+  "version": "1.0.0",
+  "description": "Bluetooth MAC address tracking and watch health data agent. Connects to devices, tracks RSSI, and if connecting to a BPW1 watch, reads heart rate, blood oxygen levels, and blood pressure using a custom BLE protocol.",
+  "tools": [
+    {
+      "name": "store_and_scan",
+      "description": "Store a MAC address and begin Bluetooth scanning. When the target MAC is found in the scan results, it triggers a match event that the Flutter app renders as a card.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "mac_address": {
+            "type": "string",
+            "description": "The Bluetooth MAC address to watch for, e.g. AA:BB:CC:DD:EE:FF"
+          }
+        },
+        "required": ["mac_address"]
+      }
+    },
+    {
+      "name": "request_watch_measurement",
+      "description": "Send a protocol request to the connected watch to start measuring and notifying heart rate, blood oxygen (SpO2), or blood pressure.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "measurement_type": {
+            "type": "string",
+            "enum": ["heart_rate", "blood_oxygen", "blood_pressure"],
+            "description": "The type of health metric to measure and read from the watch."
+          }
+        },
+        "required": ["measurement_type"]
+      }
+    }
+  ]
+}

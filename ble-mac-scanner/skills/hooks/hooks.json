@@ -1,0 +1,51 @@
+{
+  "mac-validator": {
+    "PreToolUse": [
+      {
+        "matcher": "run_command",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Before executing any command, check if the tool input contains a Bluetooth MAC address operation. If a MAC address is present but does not match the pattern ([0-9A-Fa-f]{2}[:\\-]){5}[0-9A-Fa-f]{2}, deny the tool call and respond with: 'Invalid MAC address format. Use AA:BB:CC:DD:EE:FF.' Otherwise approve.",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "write_file|edit_file",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "This plugin only modifies files inside lib/features/bluetooth_scanner/ and lib/features/watch_scanner/. If the target file path is outside those directories, deny the write and explain the constraint. Otherwise approve.",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+
+  "scan-lifecycle": {
+    "PostToolUse": [
+      {
+        "matcher": "run_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "dart \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/scan_result_injector.dart\"",
+            "timeout": 20,
+            "async": false
+          }
+        ]
+      }
+    ]
+  },
+
+  "session-context": {
+    "PreInvocation": [
+      {
+        "type": "prompt",
+        "prompt": "You are operating inside a Flutter project using MVVM architecture. Each screen has exactly two files: a VU (view) file and a VM (viewmodel) file. For Bluetooth scanning, the relevant files are bluetooth_scanner_view.dart (VU) and bluetooth_scanner_viewmodel.dart (VM). The scan is driven by flutter_blue_plus. Always route MAC address storage through setTargetMac() and scanning through startScan() on the ViewModel."
+      }
+    ]
+  }
+}
