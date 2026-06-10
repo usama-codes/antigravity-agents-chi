@@ -1,0 +1,8 @@
+{
+  "name": "dev-pipeline",
+  "version": "1.0.0",
+  "description": "Multi-agent feature development pipeline that automates the full story-to-ship workflow. Handles requirements gathering, UI design, development (Flutter/MVVM), code review, and QA testing through a coordinated team of AI agents.",
+  "author": { "name": "Custom" },
+  "license": "MIT",
+  "keywords": ["pipeline", "agents", "flutter", "development", "qa", "automation"]
+}
